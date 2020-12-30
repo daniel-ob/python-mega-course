@@ -14,11 +14,13 @@ def get_definition(word):
         return "\n".join(data[word])  # return one definition per line
     elif word.title() in data:  # if user enter "paris", this will look for "Paris"
         return "\n".join(data[word.title()])
+    elif word.upper() in data:  # for acronyms (like USA or NATO)
+        return "\n".join(data[word.upper()])
     elif len(get_close_matches(word, data.keys())) > 0:
         closest_match = get_close_matches(word, data.keys())[0]
         yn = input("Did you mean %s instead? [Y/N]: " % closest_match)
         if yn == "Y":
-            return "\n".join(data[closest_match])  # return one definition per line
+            return "\n".join(data[closest_match])
         else:
             return "Word not found"
     else:
