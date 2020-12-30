@@ -1,5 +1,4 @@
 import json  # json standard library
-#from difflib import SequenceMatcher
 from difflib import get_close_matches
 
 data_file = "data.json"
@@ -12,8 +11,9 @@ with open(data_file) as file:
 def get_definition(word):
     word = word.lower()
     if word in data:
-        #go first to the condition with higher probability
         return "\n".join(data[word])  # return one definition per line
+    elif word.title() in data:  # if user enter "paris", this will look for "Paris"
+        return "\n".join(data[word.title()])
     elif len(get_close_matches(word, data.keys())) > 0:
         closest_match = get_close_matches(word, data.keys())[0]
         yn = input("Did you mean %s instead? [Y/N]: " % closest_match)
@@ -28,5 +28,4 @@ def get_definition(word):
 word = input("Enter a word: ")
 
 print(get_definition(word))
-
 
