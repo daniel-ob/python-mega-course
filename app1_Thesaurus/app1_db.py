@@ -28,6 +28,10 @@ def get_definition(word):
     # returns a list of tuples [('Expression', 'Definition1'), ('Expression', 'Definition2'), ...]
     if results:
         return results
+    elif db_get_definition(word.title()):  # for proper names (like "Paris")
+        return db_get_definition(word.title())
+    elif db_get_definition(word.upper()):  # for acronyms (like "NATO")
+        return db_get_definition(word.upper())
     else:
         # find closer matches among dictionary expressions (words)
         expressions = db_get_expressions() 
