@@ -12,30 +12,30 @@ database = "ardit700_pm1database"
 cursor = con.cursor()
 
 
-def get_expressions():
+def db_get_expressions():
     query = cursor.execute("SELECT Expression FROM Dictionary")
     return [i[0] for i in cursor.fetchall()]
 
 
-def db_query(word):
+def db_get_definition(word):
     query = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s' " % word)
     return cursor.fetchall()
 
 
 def get_definition(word):
     word = word.lower()
-    results = db_query(word)
+    results = db_get_definition(word)
     # returns a list of tuples [('Expression', 'Definition1'), ('Expression', 'Definition2'), ...]
     if results:
         return results
     else:
         # find closer matches among dictionary expressions (words)
-        expressions = get_expressions() 
+        expressions = db_get_expressions() 
         if len(get_close_matches(word, expressions)) > 0:
             closest_match = get_close_matches(word, expressions)[0]
             yn = input("Did you mean '%s' instead? [Y/N]: " % closest_match)
             if yn == "Y":
-                return db_query(closest_match)
+                return db_get_definition(closest_match)
             else:
                 return None
         else:
