@@ -14,26 +14,28 @@ cursor = con.cursor()
 
 def get_expressions():
     query = cursor.execute("SELECT Expression FROM Dictionary")
+    return [i[0] for i in cursor.fetchall()]
+
+
+def db_query(word):
+    query = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s' " % word)
     return cursor.fetchall()
-    
-    
+
+
 def get_definition(word):
     word = word.lower()
-    query = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s' " % word)
-    results = cursor.fetchall()
+    results = db_query(word)
     # returns a list of tuples [('Expression', 'Definition1'), ('Expression', 'Definition2'), ...]
     if results:
         return results
     else:
         # find closer matches among dictionary expressions (words)
-        expressions = [i[0] for i in get_expressions()]
+        expressions = get_expressions() 
         if len(get_close_matches(word, expressions)) > 0:
             closest_match = get_close_matches(word, expressions)[0]
             yn = input("Did you mean '%s' instead? [Y/N]: " % closest_match)
             if yn == "Y":
-                query = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s' " % closest_match)
-                results =  cursor.fetchall()
-                return results
+                return db_query(closest_match)
             else:
                 return None
         else:
