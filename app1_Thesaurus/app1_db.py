@@ -1,4 +1,5 @@
 import mysql.connector
+from difflib import get_close_matches
 
 con = mysql.connector.connect(
 user = "ardit700_student",
@@ -10,11 +11,38 @@ database = "ardit700_pm1database"
 
 cursor = con.cursor()
 
+
+def get_expressions():
+    query = cursor.execute("SELECT Expression FROM Dictionary")
+    return cursor.fetchall()
+    
+    
+def get_definition(word):
+    word = word.lower()
+    query = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s' " % word)
+    results = cursor.fetchall()
+    # returns a list of tuples [('Expression', 'Definition1'), ('Expression', 'Definition2'), ...]
+    if results:
+        return results
+    else:
+        # find closer matches among dictionary expressions (words)
+        expressions = [i[0] for i in get_expressions()]
+        if len(get_close_matches(word, expressions)) > 0:
+            closest_match = get_close_matches(word, expressions)[0]
+            yn = input("Did you mean '%s' instead? [Y/N]: " % closest_match)
+            if yn == "Y":
+                query = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s' " % closest_match)
+                results =  cursor.fetchall()
+                return results
+            else:
+                return None
+        else:
+            return None
+
+
 word = input("Enter a word: ")
 
-query = cursor.execute("SELECT * FROM Dictionary WHERE Expression = '%s' " % word)
-results = cursor.fetchall()
-# results is a list of tuples [('Expression', 'Definition1'), ('Expression', 'Definition2'), ...]
+results = get_definition(word)
 
 if results:
     for result in results:
