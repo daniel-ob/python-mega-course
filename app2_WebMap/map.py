@@ -20,22 +20,23 @@ def color_producer(elevation):
 basemap = folium.Map(location=[37.02, -24.61], zoom_start=3, tiles="Stamen Terrain")
 
 # Volcanoes Layer
-fgv = folium.FeatureGroup("Volcanoes")
+fgv = folium.FeatureGroup("US_Volcanoes")
 
 for lt, ln, name, el in zip(lat, lon, name, elev):
     fgv.add_child(folium.CircleMarker(location=(lt, ln), radius=6, popup=name+"\n"+str(el)+" m",
                                       fill_color=color_producer(el), color='grey', fill_opacity=0.7))
 
 # World Population Layer
-fgp = folium.FeatureGroup("Population")
-
-fgp.add_child(folium.GeoJson(data=open('data/world.json', 'r', encoding='utf-8-sig').read(),
+fgp = folium.FeatureGroup("Population_2005")
+choropleth = folium.GeoJson(data=open('data/world.json', 'r', encoding='utf-8-sig').read(),
                              style_function=lambda x: {'fillColor':
                                                        'green' if x['properties']['POP2005'] < 10000000
                                                        else
                                                        'orange' if 10000000 <= x['properties']['POP2005'] <= 20000000
                                                        else
-                                                       'red'}))
+                                                       'red'})
+choropleth.add_child(folium.GeoJsonTooltip(fields=['NAME','POP2005'], aliases=['Country','Population'], localize=True))
+fgp.add_child(choropleth)
 
 basemap.add_child(fgv)
 basemap.add_child(fgp)
