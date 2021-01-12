@@ -29,13 +29,14 @@ for lt, ln, name, el in zip(lat, lon, name, elev):
 # World Population Layer
 fgp = folium.FeatureGroup("Population_2005")
 choropleth = folium.GeoJson(data=open('data/world.json', 'r', encoding='utf-8-sig').read(),
-                             style_function=lambda x: {'fillColor':
-                                                       'green' if x['properties']['POP2005'] < 10000000
-                                                       else
-                                                       'orange' if 10000000 <= x['properties']['POP2005'] <= 20000000
-                                                       else
-                                                       'red'})
-choropleth.add_child(folium.GeoJsonTooltip(fields=['NAME','POP2005'], aliases=['Country','Population'], localize=True))
+                            style_function=lambda x: {'fillColor':
+                                                      'green' if x['properties']['POP2005'] < 10000000
+                                                      else
+                                                      'orange' if 10000000 <= x['properties']['POP2005'] <= 20000000
+                                                      else
+                                                      'red'})
+choropleth.add_child(folium.GeoJsonTooltip(fields=['NAME', 'POP2005'],
+                                           aliases=['Country', 'Population'], localize=True))
 fgp.add_child(choropleth)
 
 basemap.add_child(fgv)
