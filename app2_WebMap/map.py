@@ -35,8 +35,8 @@ choropleth = folium.GeoJson(data=open('data/world.json', 'r', encoding='utf-8-si
                                                       'orange' if 10000000 <= x['properties']['POP2005'] <= 20000000
                                                       else
                                                       'red'})
-choropleth.add_child(folium.GeoJsonTooltip(fields=['NAME', 'POP2005'],
-                                           aliases=['Country', 'Population'], localize=True))
+choropleth.add_child(folium.GeoJsonTooltip(fields=['NAME', 'POP2005'], aliases=['Country', 'Population'],
+                                           localize=True))
 fgp.add_child(choropleth)
 
 basemap.add_child(fgv)
