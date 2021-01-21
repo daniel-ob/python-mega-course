@@ -20,7 +20,7 @@ def view():
     return rows
 
 
-def search(title, author, year, isbn):
+def search(title="", author="", year="", isbn=""):
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
     cur.execute("SELECT * FROM store WHERE title=? OR author=? OR year=? OR isbn=?", (title, author, year, isbn))
@@ -57,7 +57,7 @@ create_table()
 insert("Book1", "Author1", "2001", "2343098450985")
 insert("Book2", "Author2", "2001", "2123112253983")
 # delete(1)
-update(2, "Book_2", "Author_2", "2001", "2343098450985")
-print(view())
-# print(search("Book1", "", "", ""))
-# print(search("", "", "2001", ""))
+# update(2, "Book_2", "Author_2", "2001", "2343098450985")
+# print(view())
+# print(search(title="Book1"))
+print(search(year="2001"))
