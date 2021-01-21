@@ -6,7 +6,7 @@ db_file = "lite.db"
 def create_table():
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS store (title TEXT, author TEXT, year INTEGER, isbn INTEGER)")
+    cur.execute("CREATE TABLE IF NOT EXISTS store (id INTEGER PRIMARY KEY, title TEXT, author TEXT, year INTEGER, isbn INTEGER)")
     conn.commit()
     conn.close()
 
@@ -32,32 +32,32 @@ def search(title, author, year, isbn):
 def insert(title, author, year, isbn):
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
-    cur.execute("INSERT INTO store VALUES (?, ?, ?, ?)", (title, author, year, isbn))
+    cur.execute("INSERT INTO store VALUES (NULL, ?, ?, ?, ?)", (title, author, year, isbn))  # id is an auto-incremented value
     conn.commit()
     conn.close()
 
 
-def update(title, author, year, isbn):
+def update(id, title, author, year, isbn):
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
-    cur.execute("UPDATE store SET author=?, year=?, isbn=? WHERE title=?", (author, year, isbn, title))
+    cur.execute("UPDATE store SET title=?, author=?, year=?, isbn=? WHERE id=?", (title, author, year, isbn, id))
     conn.commit()
     conn.close()
 
 
-def delete(title):
+def delete(id):
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
-    cur.execute("DELETE FROM store WHERE title=?", (title,))
+    cur.execute("DELETE FROM store WHERE id=?", (id,))
     conn.commit()
     conn.close()
 
 
 create_table()
 insert("Book1", "Author1", "2001", "2343098450985")
-insert("Book2", "Author2", "2020", "2123112253983")
-# delete("Book1")
-# update("Book1", "Author2", "2001", "2343098450985")
-# print(view())
+insert("Book2", "Author2", "2001", "2123112253983")
+# delete(1)
+update(2, "Book_2", "Author_2", "2001", "2343098450985")
+print(view())
 # print(search("Book1", "", "", ""))
-print(search("", "", "", "2123112253983"))
+# print(search("", "", "2001", ""))
