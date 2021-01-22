@@ -26,7 +26,7 @@ def clear_entries():
 
 
 # wrapper functions
-def view_command():
+def refresh_list():
     list1.delete(0, END)
     for book in backend.view():
         list1.insert(END, book)
@@ -41,20 +41,20 @@ def search_command():
 def add_command():
     list1.delete(0, END)
     backend.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
-    view_command()
+    refresh_list()
 
 
 def update_command():
     if cur_sel:
         backend.update(cur_sel[0], title_text.get(), author_text.get(), year_text.get(),
                        isbn_text.get())
-        view_command()
+        refresh_list()
 
 
 def delete_command():
     if cur_sel:
         backend.delete(cur_sel[0])
-        view_command()
+        refresh_list()
         clear_entries()
 
 
@@ -116,7 +116,7 @@ list1.configure(yscrollcommand=sb1.set)
 sb1.configure(command=list1.yview)
 
 # Buttons
-b1 = Button(window, text="View All", width=12, command=view_command)
+b1 = Button(window, text="View All", width=12, command=refresh_list)
 b1.grid(row=2, column=3)
 
 b2 = Button(window, text="Search Entry", width=12, command=search_command)
