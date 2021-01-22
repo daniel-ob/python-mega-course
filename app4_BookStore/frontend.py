@@ -17,6 +17,14 @@ global cur_sel
 cur_sel = tuple()
 
 
+# Clear Text Entries
+def clear_entries():
+    e1.delete(0, END)
+    e2.delete(0, END)
+    e3.delete(0, END)
+    e4.delete(0, END)
+
+
 # wrapper functions
 def view_command():
     list1.delete(0, END)
@@ -47,19 +55,17 @@ def delete_command():
     if cur_sel:
         backend.delete(cur_sel[0])
         view_command()
+        clear_entries()
 
 
 def select_command(event):
     if list1.curselection():
         global cur_sel
         cur_sel = list1.get(list1.curselection())
-        e1.delete(0, END)
+        clear_entries()
         e1.insert(END, cur_sel[1])
-        e2.delete(0, END)
         e2.insert(END, cur_sel[2])
-        e3.delete(0, END)
         e3.insert(END, cur_sel[3])
-        e4.delete(0, END)
         e4.insert(END, cur_sel[4])
 
 
