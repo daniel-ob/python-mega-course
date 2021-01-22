@@ -6,7 +6,8 @@ db_file = "lite.db"
 def create_table():
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS store (id INTEGER PRIMARY KEY, title TEXT, author TEXT, year INTEGER, isbn INTEGER)")
+    cur.execute("CREATE TABLE IF NOT EXISTS store (id INTEGER PRIMARY KEY, title TEXT, author TEXT, year INTEGER, "
+                "isbn TEXT)")
     conn.commit()
     conn.close()
 
@@ -57,6 +58,9 @@ def delete(id):
 create_table()
 # insert("Book1", "Author1", "2001", "2343098450985")
 # insert("Book2", "Author2", "2001", "2123112253983")
+# Create Dummy DB:
+# for i in range(50):
+#     insert("Book%s" % i, "Author%s" % i, "19%02d" % i, "%02d34567891123" % i)
 # delete(1)
 # update(2, "Book_2", "Author_2", "2001", "2343098450985")
 # print(view())
