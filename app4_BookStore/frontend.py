@@ -6,13 +6,65 @@ User can:
 - View all records
 - Search an entry
 - Add an entry
-- Update entry
-- Delete entry
+- Update selected entry
+- Delete selected entry
 - Close
 """
 from tkinter import *
+import backend
+
+global cur_sel
+cur_sel = tuple()
+
+
+# wrapper functions
+def view_command():
+    list1.delete(0, END)
+    for book in backend.view():
+        list1.insert(END, book)
+
+
+def search_command():
+    list1.delete(0, END)
+    for book in backend.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get()):
+        list1.insert(END, book)
+
+
+def add_command():
+    list1.delete(0, END)
+    backend.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    view_command()
+
+
+def update_command():
+    if cur_sel:
+        backend.update(cur_sel[0], title_text.get(), author_text.get(), year_text.get(),
+                       isbn_text.get())
+        view_command()
+
+
+def delete_command():
+    if cur_sel:
+        backend.delete(cur_sel[0])
+        view_command()
+
+
+def select_command(event):
+    if list1.curselection():
+        global cur_sel
+        cur_sel = list1.get(list1.curselection())
+        e1.delete(0, END)
+        e1.insert(END, cur_sel[1])
+        e2.delete(0, END)
+        e2.insert(END, cur_sel[2])
+        e3.delete(0, END)
+        e3.insert(END, cur_sel[3])
+        e4.delete(0, END)
+        e4.insert(END, cur_sel[4])
+
 
 window = Tk()
+window.wm_title("Book Store")
 
 # Labels
 l1 = Label(window, text="Title")
@@ -45,11 +97,9 @@ e4 = Entry(window, textvariable=isbn_text)
 e4.grid(row=1, column=3)
 
 # Listbox
-list1 = Listbox(window)
+list1 = Listbox(window, width=30)
 list1.grid(row=2, column=0, rowspan=6, columnspan=2)
-list1_entries = [i for i in range(100)]  # to be filled with books
-for entry in list1_entries:
-    list1.insert(END, entry)
+list1.bind("<<ListboxSelect>>", select_command)
 
 # Scrollbar
 sb1 = Scrollbar(window)
@@ -60,22 +110,22 @@ list1.configure(yscrollcommand=sb1.set)
 sb1.configure(command=list1.yview)
 
 # Buttons
-b1 = Button(window, text="View All", width=12)
+b1 = Button(window, text="View All", width=12, command=view_command)
 b1.grid(row=2, column=3)
 
-b2 = Button(window, text="Search Entry", width=12)
+b2 = Button(window, text="Search Entry", width=12, command=search_command)
 b2.grid(row=3, column=3)
 
-b3 = Button(window, text="Add Entry", width=12)
+b3 = Button(window, text="Add Entry", width=12, command=add_command)
 b3.grid(row=4, column=3)
 
-b4 = Button(window, text="Update Selected", width=12)
+b4 = Button(window, text="Update Selected", width=12, command=update_command)
 b4.grid(row=5, column=3)
 
-b5 = Button(window, text="Delete Selected", width=12)
+b5 = Button(window, text="Delete Selected", width=12, command=delete_command)
 b5.grid(row=6, column=3)
 
-b6 = Button(window, text="Close", width=12)
+b6 = Button(window, text="Close", width=12, command=window.destroy)
 b6.grid(row=7, column=3)
 
 window.mainloop()

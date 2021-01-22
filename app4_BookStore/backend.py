@@ -32,7 +32,8 @@ def search(title="", author="", year="", isbn=""):
 def insert(title, author, year, isbn):
     conn = sqlite3.connect(db_file)
     cur = conn.cursor()
-    cur.execute("INSERT INTO store VALUES (NULL, ?, ?, ?, ?)", (title, author, year, isbn))  # id is an auto-incremented value
+    cur.execute("INSERT INTO store VALUES (NULL, ?, ?, ?, ?)", (title, author, year, isbn))
+    # id is an auto-incremented value
     conn.commit()
     conn.close()
 
@@ -54,10 +55,9 @@ def delete(id):
 
 
 create_table()
-insert("Book1", "Author1", "2001", "2343098450985")
-insert("Book2", "Author2", "2001", "2123112253983")
+# insert("Book1", "Author1", "2001", "2343098450985")
+# insert("Book2", "Author2", "2001", "2123112253983")
 # delete(1)
 # update(2, "Book_2", "Author_2", "2001", "2343098450985")
 # print(view())
-# print(search(title="Book1"))
-print(search(year="2001"))
+# print(search(year="2001"))
