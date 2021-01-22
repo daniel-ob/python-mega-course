@@ -1,6 +1,6 @@
 import sqlite3
 
-db_file = "lite.db"
+db_file = "books.db"
 
 
 def create_table():
