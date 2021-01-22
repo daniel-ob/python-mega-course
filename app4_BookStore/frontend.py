@@ -42,6 +42,7 @@ def add_command():
     list1.delete(0, END)
     backend.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     refresh_list()
+    clear_entries()
 
 
 def update_command():
