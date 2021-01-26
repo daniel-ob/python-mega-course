@@ -12,9 +12,21 @@ User can:
 """
 from tkinter import *
 import backend
+import csv
 
 global cur_sel
 cur_sel = tuple()
+
+translation_file = 'ui_translation.csv'
+language = 'EN'  # Choose language from translation_file
+
+
+def get_text(keyword):
+    with open(translation_file, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row['Keyword'] == keyword:
+                return row[language]
 
 
 # Clear Text Entries
@@ -71,19 +83,19 @@ def select_command(event):
 
 
 window = Tk()
-window.wm_title("Book Store")
+window.wm_title(get_text("t_book_store"))
 
 # Labels
-l1 = Label(window, text="Title")
+l1 = Label(window, text=get_text("t_title"))
 l1.grid(row=0, column=0)
 
-l2 = Label(window, text="Author")
+l2 = Label(window, text=get_text("t_author"))
 l2.grid(row=0, column=2)
 
-l3 = Label(window, text="Year")
+l3 = Label(window, text=get_text("t_year"))
 l3.grid(row=1, column=0)
 
-l4 = Label(window, text="ISBN")
+l4 = Label(window, text=get_text("t_isbn"))
 l4.grid(row=1, column=2)
 
 # Text Entries
@@ -117,22 +129,22 @@ list1.configure(yscrollcommand=sb1.set)
 sb1.configure(command=list1.yview)
 
 # Buttons
-b1 = Button(window, text="View All", width=12, command=refresh_list)
+b1 = Button(window, text=get_text("t_view_all"), width=12, command=refresh_list)
 b1.grid(row=2, column=3)
 
-b2 = Button(window, text="Search Entry", width=12, command=search_command)
+b2 = Button(window, text=get_text("t_search"), width=12, command=search_command)
 b2.grid(row=3, column=3)
 
-b3 = Button(window, text="Add Entry", width=12, command=add_command)
+b3 = Button(window, text=get_text("t_add"), width=12, command=add_command)
 b3.grid(row=4, column=3)
 
-b4 = Button(window, text="Update Selected", width=12, command=update_command)
+b4 = Button(window, text=get_text("t_update_selected"), width=12, command=update_command)
 b4.grid(row=5, column=3)
 
-b5 = Button(window, text="Delete Selected", width=12, command=delete_command)
+b5 = Button(window, text=get_text("t_delete_selected"), width=12, command=delete_command)
 b5.grid(row=6, column=3)
 
-b6 = Button(window, text="Close", width=12, command=window.destroy)
+b6 = Button(window, text=get_text("t_close"), width=12, command=window.destroy)
 b6.grid(row=7, column=3)
 
 window.mainloop()

@@ -1,0 +1,12 @@
+Keyword,EN,ES,FR
+t_book_store,Book Store,Librería,Librairie
+t_title,Title,Título,Titre
+t_author,Author,Autor,Auteur
+t_year,Year,Año,Année
+t_isbn,ISBN,ISBN,ISBN
+t_view_all,View All,Ver Todos,Voir Tous
+t_search,Search Entry,Buscar,Chercher
+t_add,Add Entry,Añadir,Ajouter
+t_update_selected,Update Selected,Actualizar,Actualiser
+t_delete_selected,Delete Selected,Suprimir,Supprimer
+t_close,Close,Cerrar,Fermer
