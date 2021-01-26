@@ -15,7 +15,7 @@ from backend import Database
 
 global cur_sel
 cur_sel = tuple()
-database = Database()
+database = Database("books.db")
 
 
 # Clear Text Entries

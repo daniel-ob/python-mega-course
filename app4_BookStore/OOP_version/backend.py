@@ -1,10 +1,8 @@
 import sqlite3
 
-db_file = "books.db"
-
 
 class Database:
-    def __init__(self):
+    def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file)
         self.cur = self.conn.cursor()
         self.cur.execute("CREATE TABLE IF NOT EXISTS store (id INTEGER PRIMARY KEY, title TEXT, author TEXT, "
