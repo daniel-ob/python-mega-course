@@ -26,10 +26,13 @@
             text: "Sign Up"
         TextInput:
             hint_text: "New Username"
+            id: username
         TextInput:
             hint_text: "New Password"
+            id: password
         Button:
             text: "Submit"
+            on_press: root.add_user(root.ids.username.text, root.ids.password.text)
 
 <RootWidget>:
 	LoginScreen:
