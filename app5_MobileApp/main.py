@@ -13,6 +13,10 @@ class LoginScreen(Screen):
         self.manager.transition.direction = "left"
         self.manager.current = "sign_up_screen"
 
+    def login(self):
+        self.manager.transition.direction = "left"
+        self.manager.current = "main_screen"
+
 
 class SignUpScreen(Screen):
     def add_user(self, user, pwd):
@@ -33,6 +37,12 @@ class SignUpScreen(Screen):
 
 class SignUpSuccessScreen(Screen):
     def go_to_login(self):
+        self.manager.transition.direction = "right"
+        self.manager.current = "login_screen"
+
+
+class MainScreen(Screen):
+    def log_out(self):
         self.manager.transition.direction = "right"
         self.manager.current = "login_screen"
 
