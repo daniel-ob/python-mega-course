@@ -1,5 +1,8 @@
 import json
 from datetime import datetime
+import glob
+from pathlib import Path
+import random
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -59,6 +62,26 @@ class MainScreen(Screen):
     def log_out(self):
         self.manager.transition.direction = "right"
         self.manager.current = "login_screen"
+
+    def get_quote(self, feeling):
+        feeling = feeling.lower()
+
+        # list of quote files
+        quote_files = glob.glob("Quotes/*.txt")
+
+        # get available feelings from filenames (without initial path and extension)
+        available_feelings = [Path(file).stem for file in quote_files]
+
+        if feeling in available_feelings:
+            # load quotes for that feeling
+            with open(f"Quotes/{feeling}.txt") as file:
+                quotes = file.readlines()
+            # get a random quote
+            message = random.choice(quotes)
+        else:
+            message = "Try another feeling"
+
+        self.ids.message.text = message
 
 
 class RootWidget(ScreenManager):

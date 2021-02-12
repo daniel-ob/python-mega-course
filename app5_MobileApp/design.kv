@@ -61,10 +61,13 @@
         Label:
             text: "How do you feel?"
         TextInput:
+            id: user_feeling
             hint_text: "Things to try: happy, sad, unloved..."
         Button:
+            on_press: root.get_quote(root.ids.user_feeling.text)
             text: "Enlighten me"
         Label:
+            id: message
             text: ""
 
 <RootWidget>:
