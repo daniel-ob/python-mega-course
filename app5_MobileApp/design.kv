@@ -39,6 +39,9 @@
         Button:
             text: "Submit"
             on_press: root.add_user(root.ids.username.text, root.ids.password.text)
+        Label:
+            id: wrong_signup
+            text: ""
 
 <SignUpSuccessScreen>:
     GridLayout:

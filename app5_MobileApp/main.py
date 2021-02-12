@@ -32,15 +32,21 @@ class SignUpScreen(Screen):
         with open("users.json") as file:
             users = json.load(file)
 
-        # add user to dictionary
-        datetime_format = "%Y-%m-%d %H:%M:%S.%f"
-        users[user] = {'username': user, 'password': pwd, 'created': datetime.now().strftime(datetime_format)}
+        if user:
+            if user not in users:
+                # add user to dictionary
+                datetime_format = "%Y-%m-%d %H:%M:%S.%f"
+                users[user] = {'username': user, 'password': pwd, 'created': datetime.now().strftime(datetime_format)}
 
-        # overwrite users file
-        with open("users.json", "w") as file:
-            json.dump(users, file)
+                # overwrite users file
+                with open("users.json", "w") as file:
+                    json.dump(users, file)
 
-        self.manager.current = "sign_up_success_screen"
+                self.manager.current = "sign_up_success_screen"
+            else:
+                self.ids.wrong_signup.text = "Username already exists"
+        else:
+            self.ids.wrong_signup.text = "Enter a valid username"
 
 
 class SignUpSuccessScreen(Screen):
