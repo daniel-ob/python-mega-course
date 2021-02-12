@@ -38,17 +38,14 @@ class SignUpScreen(Screen):
         # load users file into a dictionary
         with open("users.json") as file:
             users = json.load(file)
-
         if user:
             if user not in users:
                 # add user to dictionary
                 datetime_format = "%Y-%m-%d %H:%M:%S.%f"
                 users[user] = {'username': user, 'password': pwd, 'created': datetime.now().strftime(datetime_format)}
-
                 # overwrite users file
                 with open("users.json", "w") as file:
                     json.dump(users, file)
-
                 self.manager.current = "sign_up_success_screen"
             else:
                 self.ids.wrong_signup.text = "Username already exists"
@@ -69,13 +66,10 @@ class MainScreen(Screen):
 
     def get_quote(self, feeling):
         feeling = feeling.lower()
-
         # list of quote files
         quote_files = glob.glob("Quotes/*.txt")
-
         # get available feelings from filenames (without initial path and extension)
         available_feelings = [Path(file).stem for file in quote_files]
-
         if feeling in available_feelings:
             # load quotes for that feeling
             with open(f"Quotes/{feeling}.txt") as file:
@@ -84,7 +78,6 @@ class MainScreen(Screen):
             message = random.choice(quotes)
         else:
             message = "Try another feeling"
-
         self.ids.message.text = message
 
 
