@@ -9,12 +9,18 @@
 				text: "User Login"
 				font_size: '20sp'
 			TextInput:
-				hint_text: "Username"
 				id: username
+				hint_text: "Username"
+                write_tab: False
+                multiline: False
+                next: password
+                on_text_validate: self.next.focus = True
 			TextInput:
+				id: password
 				hint_text: "Password"
 				password: True
-				id: password
+				write_tab: False
+                multiline: False
             RelativeLayout:
                 Button:
                     text: "Login"
@@ -47,11 +53,17 @@
         Label:
             text: "Sign Up"
         TextInput:
-            hint_text: "New Username"
             id: username
+            hint_text: "New Username"
+            write_tab: False
+            multiline: False
+            next: password
+            on_text_validate: self.next.focus = True
         TextInput:
-            hint_text: "New Password"
             id: password
+            hint_text: "New Password"
+            write_tab: False
+            multiline: False
         Button:
             text: "Submit"
             on_press: root.add_user(root.ids.username.text, root.ids.password.text)
@@ -84,6 +96,8 @@
         TextInput:
             id: user_feeling
             hint_text: "Things to try: happy, sad, unloved..."
+            write_tab: False
+            multiline: False
         Button:
             on_press: root.get_quote(root.ids.user_feeling.text)
             text: "Enlighten me"
