@@ -7,6 +7,10 @@ import random
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.image import Image
+from kivy.uix.behaviors import ButtonBehavior
+
+from hoverable import HoverBehavior
 
 Builder.load_file('design.kv')  # connects .py with .kv
 
@@ -85,6 +89,10 @@ class MainScreen(Screen):
 
 
 class RootWidget(ScreenManager):
+    pass
+
+
+class ImageButton(ButtonBehavior, HoverBehavior, Image):
     pass
 
 
