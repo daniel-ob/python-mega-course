@@ -13,9 +13,17 @@ class LoginScreen(Screen):
         self.manager.transition.direction = "left"
         self.manager.current = "sign_up_screen"
 
-    def login(self):
-        self.manager.transition.direction = "left"
-        self.manager.current = "main_screen"
+    def login(self, user, pwd):
+        with open("users.json") as file:
+            users = json.load(file)
+        if user in users:
+            if users[user]['password'] == pwd:
+                self.manager.transition.direction = "left"
+                self.manager.current = "main_screen"
+            else:
+                self.ids.login_wrong.text = "wrong password"
+        else:
+            self.ids.login_wrong.text = "user does not exists"
 
 
 class SignUpScreen(Screen):

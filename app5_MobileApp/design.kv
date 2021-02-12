@@ -7,11 +7,16 @@
 				text: "User Login"
 			TextInput:
 				hint_text: "Username"
+				id: username
 			TextInput:
 				hint_text: "Password"
+				id: password
 			Button:
 				text: "Login"
-				on_press: root.login()
+				on_press: root.login(root.ids.username.text, root.ids.password.text)
+			Label:
+			    id: login_wrong
+				text: ""
 		GridLayout:
 			cols: 2
 			Button:
