@@ -60,6 +60,11 @@ class SignUpSuccessScreen(Screen):
 
 
 class MainScreen(Screen):
+    def on_pre_enter(self):
+        # clear screen on loading
+        self.ids.user_feeling.text = ""
+        self.ids.message.text = ""
+
     def log_out(self):
         self.manager.transition.direction = "right"
         self.manager.current = "login_screen"
