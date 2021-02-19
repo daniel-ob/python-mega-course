@@ -1,7 +1,13 @@
-import cv2
 import time
+from datetime import datetime
+
+import cv2
+import pandas
 
 background = None
+presence_hist = [0, 0]
+log = []
+log_df = pandas.DataFrame(columns=["Enter", "Exit"])
 
 # capture webcam
 video = cv2.VideoCapture(0)
@@ -12,6 +18,8 @@ for i in range(10):
     time.sleep(0.5)
 
 while True:
+    presence = 0
+
     # grab a frame
     check, frame = video.read()
 
@@ -39,10 +47,19 @@ while True:
         # filter out contours with area smaller than 10000 px
         if cv2.contourArea(contour) < 10000:
             continue
+        # if a contour is found, there is presence on image
+        presence = 1
         # calculate minimal up-right bounding rectangle for contour
         (x, y, w, h) = cv2.boundingRect(contour)
         # draw a green rectangle around contour (frame, corner1, corner2, color, thickness)
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 3)
+
+    # update presence history
+    presence_hist.append(presence)
+
+    # record time when objects enter and exit the frame
+    if presence_hist[-1] != presence_hist[-2]:
+        log.append(datetime.now())
 
     # show image in a window
     # cv2.imshow("Gray", gray)
@@ -53,7 +70,16 @@ while True:
     # wait for 1ms and break loop if user press 'q'
     key = cv2.waitKey(1)
     if key == ord("q"):
+        # if an object is present, record exit time before closing
+        if presence:
+            log.append(datetime.now())
         break
+
+# Save log in a CSV file using a pandas DataFrame
+for i in range(0, len(log), 2):
+    # add a row to DF
+    log_df = log_df.append({"Enter": log[i], "Exit": log[i+1]}, ignore_index=True)
+log_df.to_csv("log.csv")
 
 # release camera and close windows at the end
 video.release()
