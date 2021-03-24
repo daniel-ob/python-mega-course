@@ -4,24 +4,27 @@ import requests
 from bs4 import BeautifulSoup
 import pandas
 
+
+def get_soup(url):
+    # Request header allows to impersonate a web browser
+    user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0"
+    r = requests.get(url, headers={"User-agent": user_agent})
+    c = r.content
+    return BeautifulSoup(c, "html.parser")
+
+
 # Using cached version of www.century21.com, search "Rock Springs, WY"
-# Header allows to impersonate a web browser
-user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0"
-url = "http://www.pyclass.com/real-estate/rock-springs-wy/LCWYROCKSPRINGS/"
-r = requests.get(url, headers={"User-agent": user_agent})
-c = r.content
-soup = BeautifulSoup(c, "html.parser")
+soup = get_soup("http://www.pyclass.com/real-estate/rock-springs-wy/LCWYROCKSPRINGS/")
 nb_pages = len(soup.find("span", {"class": "PageNumbers"}).find_all("a", {"class": "Page"}))
 
 # Store properties data in a list of dictionaries
 props = []
 url_base = "http://pyclass.com/real-estate/rock-springs-wy/LCWYROCKSPRINGS/t=0&s="
+# 1st page "t=0&s=0.html", 2nd "t=0&s=10.html, 3rd "t=0&s=20.html ..."
 for index in range(0, nb_pages * 10, 10):
-    url = url_base + str(index) + ".html"
-    # print(url)
-    r = requests.get(url, headers={"User-agent": user_agent})
-    c = r.content
-    soup = BeautifulSoup(c, "html.parser")
+    cur_url = url_base + str(index) + ".html"
+    # print(cur_url)
+    soup = get_soup(cur_url)
 
     # find all property rows on results page
     rows = soup.find_all("div", {"class": "propertyRow"})
