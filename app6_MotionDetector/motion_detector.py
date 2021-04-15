@@ -4,6 +4,8 @@ from datetime import datetime
 import cv2
 import pandas
 
+from plotting import plot
+
 background = None
 presence_hist = [0, 0]
 log = []
@@ -80,6 +82,9 @@ for i in range(0, len(log), 2):
     # add a row to DF
     log_df = log_df.append({"Enter": log[i], "Exit": log[i+1]}, ignore_index=True)
 log_df.to_csv("log.csv")
+
+# Shows a plot of the log and saves it to a html file
+plot(log_df, "plot.html")
 
 # release camera and close windows at the end
 video.release()
