@@ -6,6 +6,13 @@ import pandas
 
 from plotting import plot
 
+
+# configuration
+CAM_STABILISATION_ENABLED = True
+PLOTTING_ENABLED = True
+LOG_FILENAME = "log.csv"
+PLOT_FILENAME = "plot.html"
+
 background = None
 presence_hist = [0, 0]
 log = []
@@ -14,10 +21,11 @@ log_df = pandas.DataFrame(columns=["Enter", "Exit"])
 # capture webcam
 video = cv2.VideoCapture(0)
 
-# stabilize webcam image for 5s at startup
-for i in range(10):
-    check, frame = video.read()
-    time.sleep(0.5)
+if CAM_STABILISATION_ENABLED:
+    # stabilize webcam image for 5s at startup
+    for i in range(10):
+        check, frame = video.read()
+        time.sleep(0.5)
 
 while True:
     presence = 0
@@ -81,10 +89,11 @@ while True:
 for i in range(0, len(log), 2):
     # add a row to DF
     log_df = log_df.append({"Enter": log[i], "Exit": log[i+1]}, ignore_index=True)
-log_df.to_csv("log.csv")
+log_df.to_csv(LOG_FILENAME)
 
-# Shows a plot of the log and saves it to a html file
-plot(log_df, "plot.html")
+if PLOTTING_ENABLED:
+    # Shows a plot of the log and saves it to a html file
+    plot(log_df, PLOT_FILENAME)
 
 # release camera and close windows at the end
 video.release()
