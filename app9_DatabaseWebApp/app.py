@@ -30,14 +30,22 @@ def index():
 
 @app.route("/success", methods=['POST'])
 def success():
-    """Prints collected data and displays the success page (accessible at 'success')
+    """Stores data into database and displays the success page
     """
     if request.method == "POST":
         email = request.form['email']
         height = request.form['height']
         # print(request.form)
         print(email, height)
-        return render_template("success.html")
+
+        # Add data to database if email does not yet exists
+        if db.session.query(Data).filter(Data.email == email).count() == 0:
+            data = Data(email, height)
+            db.session.add(data)
+            db.session.commit()
+            return render_template("success.html")
+        else:
+            return render_template("index.html", message="This email already exists in our database")
 
 
 if __name__ == '__main__':
