@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
+from send_mail import send_mail
+
 # Create the application
 app = Flask(__name__)
 # Set URI for the database to be used: dialect[+driver]://user:password@host/dbname
@@ -38,11 +40,14 @@ def success():
         # print(request.form)
         print(email, height)
 
-        # Add data to database if email does not yet exists
+        # If email does not yet exists
         if db.session.query(Data).filter(Data.email == email).count() == 0:
+            # Add data to database
             data = Data(email, height)
             db.session.add(data)
             db.session.commit()
+
+            send_mail(email, height)
             return render_template("success.html")
         else:
             return render_template("index.html", message="This email already exists in our database")
