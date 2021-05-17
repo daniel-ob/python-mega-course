@@ -2,7 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 
-def send_mail(to_email, height):
+def send_mail(to_email, height, average_height, count):
     # Server configuration
     smtp_server = "smtp.server.com"
     port = 587  # For starttls
@@ -11,7 +11,10 @@ def send_mail(to_email, height):
     from_email = "user@server.com"
 
     subject = "[Data Collector App] Thank you"
-    body = "Thank you for taking part in this survey.<br> Your height is <strong>%s</strong>." % height
+    body = "Thank you for taking part in this survey.<br> " \
+           "Your height is <strong>%s cm</strong>.<br>" \
+           "The average height for now is <strong>%s cm</strong> (out of <strong>%s</strong> people)" \
+           % (height, average_height, count)
 
     # Create Message object
     message = MIMEText(body, 'html')

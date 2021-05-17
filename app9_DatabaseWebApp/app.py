@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 from send_mail import send_mail
 
@@ -47,7 +48,11 @@ def success():
             db.session.add(data)
             db.session.commit()
 
-            send_mail(email, height)
+            average_height = round(db.session.query(func.avg(Data.height)).scalar())  # int value
+            count = db.session.query(Data.height).count()
+            # print(average_height, count)
+
+            send_mail(email, height, average_height, count)
             return render_template("success.html")
         else:
             return render_template("index.html", message="This email already exists in our database")
