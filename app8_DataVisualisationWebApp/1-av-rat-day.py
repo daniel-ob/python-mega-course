@@ -1,4 +1,9 @@
 import justpy as jp
+import pandas
+
+data = pandas.read_csv("reviews.csv", parse_dates=['Timestamp'])
+data['Day'] = data['Timestamp'].dt.date
+day_average = data.groupby(['Day']).mean()
 
 # Spline-chart JSON from Highcharts documentation
 # https://www.highcharts.com/docs/chart-and-series-types/spline-chart
@@ -74,6 +79,13 @@ def app():
     # print(type(hc.options))
     # Options keys can be accessed by "." operator and can be modified
     # print(hc.options.series[0].data)
+
+    # Set graph data
+    x = day_average.index
+    y = day_average['Rating']
+    # when x axis are dates, we need to use xAxis categories
+    hc.options.xAxis.categories = list(x)
+    hc.options.series[0].data = list(y)
 
     return wp
 
