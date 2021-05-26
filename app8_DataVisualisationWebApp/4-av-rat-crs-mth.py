@@ -11,10 +11,10 @@ month_course_average = data.groupby(["Month", "Course Name"])["Rating"].mean().u
 chart_def = """
 {
     chart: {
-        type: 'areaspline'
+        type: 'spline'
     },
     title: {
-        text: 'Average fruit consumption during one week'
+        text: 'Average Rating by Course by Month'
     },
     legend: {
         layout: 'vertical',
@@ -22,7 +22,7 @@ chart_def = """
         verticalAlign: 'top',
         x: 150,
         y: 100,
-        floating: true,
+        floating: false,
         borderWidth: 1,
         backgroundColor: '#FFFFFF'
     },
@@ -44,12 +44,12 @@ chart_def = """
     },
     yAxis: {
         title: {
-            text: 'Fruit units'
+            text: 'Rating'
         }
     },
     tooltip: {
         shared: true,
-        valueSuffix: ' units'
+        valueSuffix: ''
     },
     credits: {
         enabled: false
