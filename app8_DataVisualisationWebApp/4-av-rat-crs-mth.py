@@ -1,5 +1,10 @@
 import justpy as jp
+import pandas
 
+
+data = pandas.read_csv("reviews.csv", parse_dates=["Timestamp"])
+data["Month"] = data["Timestamp"].dt.strftime("%Y-%m")
+month_course_average = data.groupby(["Month", "Course Name"])["Rating"].mean().unstack()
 
 # Areaspline-chart JSON from Highcharts documentation
 # https://www.highcharts.com/docs/chart-and-series-types/areaspline-chart
@@ -72,6 +77,15 @@ def app():
 
     # Add highchart
     hc = jp.HighCharts(a=wp, options=chart_def)
+    # Set x axis values
+    hc.options.xAxis.categories = list(month_course_average.index)
+
+    # Construct series (list of dictionaries), each dictionary represents a line in the graph
+    # using nested list comprehensions
+    hc.options.series = [{
+        "name": column,
+        "data": [rating for rating in month_course_average[column]]
+        } for column in month_course_average.columns]
 
     return wp
 
