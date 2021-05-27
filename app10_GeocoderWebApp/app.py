@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import pandas
 from geopy.geocoders import ArcGIS
 
@@ -29,22 +29,33 @@ def geocoder(file):
 def index():
     """Displays the index page (homepage) accessible at '/'
     """
-    return render_template("index.html")  # html files must be in templates folder
+    return render_template("index.html", btn="")  # html files must be in templates folder
 
 
 @app.route("/success", methods=['POST'])
 def success():
+    """Get user file, call geocoder and show output data in a table. Also show a download button.
+    """
     if request.method == "POST":
         file = request.files["file"]
 
         output_df = geocoder(file)
-        print(output_df)
         if output_df is not None:
-            table = output_df.to_html()
+            output_df.to_csv("yourfile.csv", index=False)
+            table = output_df.to_html(index=False)
+            button = "download.html"
         else:
             table = "Please make sure you have an address column in your CSV file!"
+            button = ""
 
-        return render_template("index.html", table=table)
+        return render_template("index.html", table=table, btn=button)
+
+
+@app.route("/download")
+def download():
+    """Download output dataframe as CSV file
+    """
+    return send_file("yourfile.csv", as_attachment=True, attachment_filename="yourfile.csv")
 
 
 if __name__ == '__main__':
