@@ -40,11 +40,11 @@ def success():
         output_df = geocoder(file)
         print(output_df)
         if output_df is not None:
-            msg = "Your file \"%s\" was successfully loaded" % file.filename
+            table = output_df.to_html()
         else:
-            msg = "Please make sure you have an address column in your CSV file!"
+            table = "Please make sure you have an address column in your CSV file!"
 
-        return render_template("index.html", message=msg)
+        return render_template("index.html", table=table)
 
 
 if __name__ == '__main__':
