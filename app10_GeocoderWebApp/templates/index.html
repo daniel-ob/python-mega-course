@@ -10,7 +10,7 @@
             <h3>Please upload your CSV file.
                 The values containing addresses should be in a column named <i>address</i> or <i>Address</i></h3>
             <form action={{ url_for('success') }} method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" required><br>
+                <input type="file" accept=".csv" name="file" required><br>
                 <button type="submit">Submit</button>
             </form>
             {{ table|safe }}
