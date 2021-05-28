@@ -31,8 +31,7 @@ def geocoder(file):
 
 
 def df_to_file(df):
-    """Save df to CSV file. Create folder if doesn't exist
-    """
+    """Save df to CSV file. Create folder if doesn't exist"""
     global output_file
     if not os.path.exists(OUTPUT_FILES):
         os.makedirs(OUTPUT_FILES)
@@ -44,15 +43,13 @@ def df_to_file(df):
 
 @app.route("/")  # GET method by default
 def index():
-    """Displays the index page (homepage) accessible at '/'
-    """
+    """Displays the index page (homepage) accessible at '/' """
     return render_template("index.html", btn="")  # html files must be in templates folder
 
 
 @app.route("/success", methods=['POST'])
 def success():
-    """Get user file, call geocoder and show output data in a table. Also show a download button.
-    """
+    """Geocode user file. Save output to a file and display it on a table. Also show a download button"""
     if request.method == "POST":
         file = request.files["file"]
 
@@ -70,8 +67,7 @@ def success():
 
 @app.route("/download")
 def download():
-    """Download output dataframe as CSV file
-    """
+    """Download output CSV file"""
     return send_file(output_file, as_attachment=True, attachment_filename="yourfile.csv")
 
 
